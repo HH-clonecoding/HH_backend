@@ -5,10 +5,20 @@ class PlacesService {
     this.placesRepository = new PlacesRepository();
   }
 
-  getSplitCity = async (city, splitNumber) => {
-    await this.placesRepository.getSplitCity(city, splitNumber);
+  getSplitCity = async (cityID, city, splitNumber) => {
+    const replacesSplit = await this.placesRepository.getSplitCity(
+      cityID,
+      city,
+      splitNumber
+    );
 
-    return;
+    return replacesSplit;
+  };
+
+  Review = async (placeID) => {
+    const Review = await this.placesRepository.Review(placeID);
+
+    return Review;
   };
 }
 
