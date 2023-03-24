@@ -20,6 +20,21 @@ class PlacesService {
 
     return Review;
   };
+
+  buildingInfo = async (placeID) => {
+    const findOneRooms = await this.placesRepository.buildingInfo(placeID);
+
+    return findOneRooms;
+  };
+
+  getDetailInfo = async (userId, placeID) => {
+    const DetailInfo = await this.placesRepository.getDetailInfo(
+      userId,
+      placeID
+    );
+
+    return DetailInfo;
+  };
 }
 
 module.exports = PlacesService;

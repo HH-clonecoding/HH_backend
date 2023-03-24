@@ -35,10 +35,31 @@ class PlacesController {
 
   Review = async (req, res, next) => {
     const { placeID } = req.params;
+    const { userId } = res.locals.user;
 
     const Review = await this.placesService.Review(placeID);
 
-    return res.status(200).json({ comments: Review });
+    const buildingInfo = await this.placesService.buildingInfo(placeID);
+
+    const getDetailInfo = await this.placesService.getDetailInfo(
+      userId,
+      placeID
+    );
+
+    const { picture, name, star, commentCount, like, system, location } =
+      getDetailInfo;
+
+    return res.status(200).json({
+      picture: picture,
+      name: name,
+      star: star,
+      commentCount: commentCount,
+      like: like,
+      system: system,
+      location: location,
+      totalRoom: buildingInfo,
+      comments: Review,
+    });
   };
 }
 
