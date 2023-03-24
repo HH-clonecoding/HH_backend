@@ -17,13 +17,15 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Users, {
         targetKey: "userId",
         foreignKey: "UserId",
-        onDelete: "CASCADE",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       });
-
+      //긴급수정
       this.belongsTo(models.Places, {
-        targetKey: "PlaceId",
-        foreignKey: "placeId",
-        onDelete: "CASCADE",
+        targetKey: "placeId",
+        foreignKey: "PlaceId",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       });
     }
   }
@@ -56,6 +58,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       RecomId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      rate: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
