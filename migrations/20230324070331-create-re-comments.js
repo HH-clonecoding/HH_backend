@@ -16,7 +16,8 @@ module.exports = {
           model: "Places",
           key: "placeId",
         },
-        onDelete: "CASCADE",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       },
       CommentId: {
         type: Sequelize.INTEGER,
@@ -25,7 +26,8 @@ module.exports = {
           model: "Comments",
           key: "commentId",
         },
-        onDelete: "CASCADE",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       },
       comment: {
         type: Sequelize.STRING,

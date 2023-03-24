@@ -20,20 +20,25 @@ class PlacesController {
           .json({ errorMessage: "body 데이터 형식이 올바르지 않습니다." });
       }
       const city_list = await this.placesService.getSplitCity(
+        cityID,
         city,
-        splitNumber
+        Number(splitNumber)
       );
       city_list;
       return res.status(200).json({ motelList: city_list });
       // artist_list == false ? res.status(sc.BAD_REQUEST).send(au.successFalse(rm.DB_NOT_MATCHED_ERROR)) : res.status(sc.OK).send(au.successTrue(rm.DB_SUCCESS, artist_list));
     } catch (err) {
-      res
-        .status(sc.INTERNAL_SERVER_ERROR)
-        .send(au.successFalse(rm.INTERNAL_SERVER_ERROR));
+      res.status(400).send("오류");
       throw err;
     }
+  };
 
-    return;
+  Review = async (req, res, next) => {
+    const { placeID } = req.params;
+
+    const Review = await this.placesService.Review(placeID);
+
+    return res.status(200).json({ comments: Review });
   };
 }
 

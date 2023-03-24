@@ -13,13 +13,15 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Users, {
         targetKey: "userId",
         foreignKey: "UserId",
-        onDelete: "CASCADE",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       });
 
       this.belongsTo(models.Places, {
         targetKey: "placeId",
         foreignKey: "PlaceId",
-        onDelete: "CASCADE",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       });
     }
   }
