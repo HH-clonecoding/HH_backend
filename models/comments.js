@@ -19,10 +19,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "UserId",
         onDelete: "CASCADE",
       });
-
+      //긴급수정
       this.belongsTo(models.Places, {
-        targetKey: "PlaceId",
-        foreignKey: "placeId",
+        targetKey: "placeId",
+        foreignKey: "PlaceId",
         onDelete: "CASCADE",
       });
     }
