@@ -16,7 +16,8 @@ module.exports = {
           model: "Users",
           key: "userId",
         },
-        onDelete: "CASCADE",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       },
       PlaceId: {
         type: Sequelize.INTEGER,
@@ -25,7 +26,8 @@ module.exports = {
           model: "Places",
           key: "placeId",
         },
-        onDelete: "CASCADE",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       },
       createdAt: {
         allowNull: false,

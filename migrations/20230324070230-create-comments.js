@@ -16,7 +16,8 @@ module.exports = {
           model: "Places",
           key: "placeId",
         },
-        onDelete: "CASCADE",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       },
       nickname: {
         type: Sequelize.STRING,
@@ -29,7 +30,8 @@ module.exports = {
           model: "Users",
           key: "userId",
         },
-        onDelete: "CASCADE",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       },
       comment: {
         type: Sequelize.STRING,
