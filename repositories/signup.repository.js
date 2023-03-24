@@ -12,3 +12,4 @@ class SignUpRepository {
     return createSignUp
   }
 }
+module.exports = SignUpRepository
