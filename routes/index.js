@@ -8,9 +8,9 @@ const likesRouter = require("./likes.route");
 // const re_commentsRouter = require("./re_comments.route"); // 추후에 기능 구현 할 수도 있음
 // const commentsRouter = require("./comments.route"); // 추후에 기능 구현 할 수도 있음
 
-router.use("/user/signup", signupRouter);
-router.use("/user/login", loginRouter);
+// router.use("/user/signup", signupRouter);
+// router.use("/user/login", loginRouter);
 router.use("/place", placesRouter);
-router.use("/like", likesRouter);
+// router.use("/like", likesRouter);
 
 module.exports = router;
