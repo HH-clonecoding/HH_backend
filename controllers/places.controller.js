@@ -1,5 +1,6 @@
 const PlacesService = require("../services/places.service");
 const CustomError = require("../middlewares/errorHandler");
+const authMiddleware = require("../middlewares/authMiddleware");
 const Joi = require("joi");
 
 class PlacesController {
@@ -124,7 +125,7 @@ class PlacesController {
       }
 
       if (boolValue == true) {
-        //사용자 검증 미들웨어 시작 넣어줘야함
+        authMiddleware;
         const { userId } = res.locals.user;
         const getUserDetailInfo = await this.placesService.getDetailInfo(
           userId,

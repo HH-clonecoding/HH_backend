@@ -26,7 +26,7 @@ class PlacesRepository {
         });
 
         return {
-          picture: [ele.pictures] || "",
+          picture: ele.pictures || "",
           name: ele.name || "",
           star: ele.star || "",
           commentCount: findPlacename.length || 0,
@@ -46,20 +46,22 @@ class PlacesRepository {
     });
 
     const renameFineComments = await Promise.all(
-      findComments.map(async (ele) => {
+      findComments.map(async (ele, index) => {
         const findRecomment = await Re_comments.findAll({
           where: { CommentId: ele.commentId },
         });
+        const findRecomments = findRecomment[index] || "";
+        console.log("보여줘", findRecomments.comment);
         return {
           commentId: ele.commentId,
           nickname: ele.nickname,
           rate: ele.rate,
           createDate: ele.createdAt,
           comment: ele.comment,
-          pictures: ele.pictures, // 배열로 들어가면 배열로 나오겠지?
+          pictures: [ele.pictures] || "",
           reply: {
-            comment: findRecomment.comment || "",
-            createDate: findRecomment.createdAt || "",
+            comment: findRecomments.comment || "",
+            createDate: findRecomments.createdAt || "",
           },
         };
       })
