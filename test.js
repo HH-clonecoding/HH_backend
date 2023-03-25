@@ -1,5 +1,14 @@
-const testa = { test: "why", TEST2: "WHY2" };
+const add = 1;
+const test2 = 1;
 
-const { test, TEST2 } = testa;
+const userId = add;
 
-console.log({ test: test, TEST2: TEST2 });
+const test = (userId, test2) => {
+  console.log(userId);
+  console.log(test2);
+  const good = userId + test2;
+
+  return console.log(good);
+};
+
+test(test2);

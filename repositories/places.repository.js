@@ -78,7 +78,7 @@ class PlacesRepository {
     return findOneRooms;
   };
 
-  getDetailInfo = async (userId, placeID) => {
+  getDetailInfo = async (userId, placeID, boolValue) => {
     // 게시글 가져오기
     const getDetailInfo = await Places.findAll({
       where: { placeId: placeID }, // 도시 조건 의문 해결 cityID를 지역 쿼리로 생각하자
@@ -104,7 +104,9 @@ class PlacesRepository {
           name: ele.name,
           star: ele.star,
           commentCount: findPlacename.length || 0,
-          like: await this.likeService.toggleLike(userId, placeID), //라이크 들어가야함
+          like: userId
+            ? await this.likeService.findCheckAndAdd(userId, placeID, boolValue)
+            : false, //라이크 들어가야함
           system: ele.system,
           location: {
             city: ele.city,

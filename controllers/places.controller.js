@@ -1,4 +1,6 @@
 const PlacesService = require("../services/places.service");
+const CustomError = require("../middlewares/errorHandler");
+const Joi = require("joi");
 
 class PlacesController {
   constructor() {
@@ -9,15 +11,51 @@ class PlacesController {
     const { cityID } = req.params;
     const { city, splitNumber } = req.body;
 
+    const messages = {
+      "string.base": "이 필드는 문자열로 이루어져야 합니다.",
+      "string.empty": "이 필드는 비어 있을 수 없습니다.",
+      "any.required": "이 필드는 필수입니다.",
+    };
+
+    const schema = Joi.object({
+      cityID: Joi.number().messages({
+        ...messages,
+        "string.base": "cityID 필드는 숫자로 이루어져야 합니다.",
+      }),
+      city: Joi.string().messages({
+        ...messages,
+        "string.base": "city 필드는 문자열로 이루어져야 합니다.",
+      }),
+      splitNumber: Joi.number().messages({
+        ...messages,
+        "string.base": "splitNumber 필드는 숫자로 이루어져야 합니다.",
+      }),
+    });
+
+    const validate = schema.validate(
+      { cityID: cityID, city: city, splitNumber: splitNumber },
+      { abortEarly: false }
+    );
+
+    if (validate.error) {
+      throw new CustomError(validate.error.message, 400, false);
+    } else {
+      console.log("Valid input!");
+    }
+
     try {
       if (!city) {
-        res
-          .status(412)
-          .json({ errorMessage: "city 데이터 형식이 올바르지 않습니다." });
+        throw new CustomError(
+          { errorMessage: "city 데이터 형식이 올바르지 않습니다. 빈 값입니다" },
+          412,
+          false
+        );
       } else if (!splitNumber) {
-        res
-          .status(412)
-          .json({ errorMessage: "body 데이터 형식이 올바르지 않습니다." });
+        throw new CustomError(
+          { errorMessage: "body 데이터 형식이 올바르지 않습니다. 빈 값입니다" },
+          412,
+          false
+        );
       }
       const city_list = await this.placesService.getSplitCity(
         cityID,
@@ -28,38 +66,96 @@ class PlacesController {
       return res.status(200).json({ motelList: city_list });
       // artist_list == false ? res.status(sc.BAD_REQUEST).send(au.successFalse(rm.DB_NOT_MATCHED_ERROR)) : res.status(sc.OK).send(au.successTrue(rm.DB_SUCCESS, artist_list));
     } catch (err) {
-      res.status(400).send("오류");
-      throw err;
+      throw new CustomError(
+        { errorMessage: "예상하지 못한 에러가 발생했습니다." },
+        500,
+        false
+      );
     }
   };
 
   Review = async (req, res, next) => {
+    const boolValue = req.query.boolValue;
     const { placeID } = req.params;
-    const { userId } = res.locals.user;
+    const { userId } = res.locals.user || null;
 
-    const Review = await this.placesService.Review(placeID);
+    const messages = {
+      "string.base": "이 필드는 숫자로 이루어져야 합니다.",
+      "string.empty": "이 필드는 비어 있을 수 없습니다.",
+      "any.required": "이 필드는 필수입니다.",
+    };
 
-    const buildingInfo = await this.placesService.buildingInfo(placeID);
+    const schema = Joi.object({
+      placeID: Joi.number().messages({
+        ...messages,
+        "string.base": "placeID 필드는 숫자로 이루어져야 합니다.",
+      }),
+    });
 
-    const getDetailInfo = await this.placesService.getDetailInfo(
-      userId,
-      placeID
+    const validate = schema.validate(
+      { placeID: placeID },
+      { abortEarly: false }
     );
 
-    const { picture, name, star, commentCount, like, system, location } =
-      getDetailInfo;
+    if (validate.error) {
+      throw new CustomError(validate.error.message, 400, false);
+    } else {
+      console.log("Valid input!");
+    }
 
-    return res.status(200).json({
-      picture: picture,
-      name: name,
-      star: star,
-      commentCount: commentCount,
-      like: like,
-      system: system,
-      location: location,
-      totalRoom: buildingInfo,
-      comments: Review,
-    });
+    try {
+      const Review = await this.placesService.Review(placeID);
+      if (!Review) {
+        throw new CustomError(
+          { errorMessage: "Review 데이터에 값이 존재하지 않습니다." },
+          404,
+          false
+        );
+      }
+
+      const buildingInfo = await this.placesService.buildingInfo(placeID);
+      if (!buildingInfo) {
+        throw new CustomError(
+          { errorMessage: "buildingInfo 데이터에 값이 존재하지 않습니다." },
+          404,
+          false
+        );
+      }
+
+      const getDetailInfo = await this.placesService.getDetailInfo(
+        userId,
+        placeID,
+        boolValue
+      );
+      if (!getDetailInfo) {
+        throw new CustomError(
+          { errorMessage: "getDetailInfo 데이터에 값이 존재하지 않습니다." },
+          404,
+          false
+        );
+      }
+
+      const { picture, name, star, commentCount, like, system, location } =
+        getDetailInfo;
+
+      return res.status(200).json({
+        picture: picture,
+        name: name,
+        star: star,
+        commentCount: commentCount,
+        like: like,
+        system: system,
+        location: location,
+        totalRoom: buildingInfo,
+        comments: Review,
+      });
+    } catch (error) {
+      throw new CustomError(
+        { errorMessage: "예상하지 못한 에러가 발생했습니다." },
+        500,
+        false
+      );
+    }
   };
 }
 
