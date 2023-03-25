@@ -3,6 +3,7 @@ const app = express();
 
 const cors = require("cors");
 const { sequelize } = require("./models/index.js");
+const { swaggerUi, specs } = require("./swagger/swagger");
 
 const indexRouter = require("./routes/index");
 
@@ -20,6 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/api", indexRouter);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use((err, req, res, next) => {
   console.log(err);
