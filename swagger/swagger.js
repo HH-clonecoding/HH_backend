@@ -9,7 +9,7 @@ const options = {
       version: "1.0.0",
       description: "Test API with express",
     },
-    host: "54.180.30.108:3001",
+    host: "54.180.30.108:3002",
     basePath: "/",
   },
   apis: ["./routes/*.js", "./swagger/*"],

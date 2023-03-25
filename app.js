@@ -7,7 +7,7 @@ const { swaggerUi, specs } = require("./swagger/swagger");
 
 const indexRouter = require("./routes/index");
 
-const port = 3001;
+const port = 3002;
 
 app.use(
   cors({
