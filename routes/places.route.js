@@ -5,7 +5,7 @@ const router = express.Router();
 const PlacesController = require("../controllers/places.controller");
 const placesController = new PlacesController();
 
-router.post("/:cityID", placesController.mainPage); // 메인페이지 city 가져와야함
+router.post("/:cityID", placesController.mainPage);
 
 router.get("/:placeID", placesController.Review);
 
