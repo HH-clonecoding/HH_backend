@@ -57,12 +57,14 @@ class PlacesController {
           false
         );
       }
+
       const city_list = await this.placesService.getSplitCity(
         cityID,
         city,
         Number(splitNumber)
       );
       city_list;
+
       return res.status(200).json({ motelList: city_list });
       // artist_list == false ? res.status(sc.BAD_REQUEST).send(au.successFalse(rm.DB_NOT_MATCHED_ERROR)) : res.status(sc.OK).send(au.successTrue(rm.DB_SUCCESS, artist_list));
     } catch (err) {
@@ -77,7 +79,6 @@ class PlacesController {
   Review = async (req, res, next) => {
     const boolValue = req.query.boolValue;
     const { placeID } = req.params;
-    const { userId } = res.locals.user || null;
 
     const messages = {
       "string.base": "이 필드는 숫자로 이루어져야 합니다.",
@@ -122,33 +123,70 @@ class PlacesController {
         );
       }
 
-      const getDetailInfo = await this.placesService.getDetailInfo(
-        userId,
-        placeID,
-        boolValue
-      );
-      if (!getDetailInfo) {
-        throw new CustomError(
-          { errorMessage: "getDetailInfo 데이터에 값이 존재하지 않습니다." },
-          404,
-          false
+      if (boolValue == true) {
+        //사용자 검증 미들웨어 시작 넣어줘야함
+        const { userId } = res.locals.user;
+        const getUserDetailInfo = await this.placesService.getDetailInfo(
+          userId,
+          placeID,
+          boolValue
         );
+
+        if (!getUserDetailInfo) {
+          throw new CustomError(
+            {
+              errorMessage:
+                "getUserDetailInfo 데이터에 값이 존재하지 않습니다.",
+            },
+            404,
+            false
+          );
+        }
+
+        const { picture, name, star, commentCount, like, system, location } =
+          getUserDetailInfo;
+
+        return res.status(200).json({
+          picture: picture,
+          name: name,
+          star: star,
+          commentCount: commentCount,
+          like: like,
+          system: system,
+          location: location,
+          totalRoom: buildingInfo,
+          comments: Review,
+        });
+      } else {
+        const getDetailInfo = await this.placesService.getNoAuthDetailInfo(
+          placeID
+        );
+
+        if (!getDetailInfo) {
+          throw new CustomError(
+            {
+              errorMessage: "getDetailInfo 데이터에 값이 존재하지 않습니다.",
+            },
+            404,
+            false
+          );
+        }
+
+        const [{ picture, name, star, commentCount, like, system, location }] =
+          getDetailInfo;
+
+        return res.status(200).json({
+          picture: picture,
+          name: name,
+          star: star,
+          commentCount: commentCount,
+          like: like,
+          system: system,
+          location: location,
+          totalRoom: buildingInfo,
+          comments: Review,
+        });
       }
-
-      const { picture, name, star, commentCount, like, system, location } =
-        getDetailInfo;
-
-      return res.status(200).json({
-        picture: picture,
-        name: name,
-        star: star,
-        commentCount: commentCount,
-        like: like,
-        system: system,
-        location: location,
-        totalRoom: buildingInfo,
-        comments: Review,
-      });
     } catch (error) {
       throw new CustomError(
         { errorMessage: "예상하지 못한 에러가 발생했습니다." },

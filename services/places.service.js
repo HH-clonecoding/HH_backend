@@ -27,6 +27,12 @@ class PlacesService {
     return findOneRooms;
   };
 
+  getNoAuthDetailInfo = async (placeID) => {
+    const DetailInfo = await this.placesRepository.getNoAuthDetailInfo(placeID);
+
+    return DetailInfo;
+  };
+
   getDetailInfo = async (userId, placeID, boolValue) => {
     const DetailInfo = await this.placesRepository.getDetailInfo(
       userId,
