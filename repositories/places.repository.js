@@ -51,14 +51,19 @@ class PlacesRepository {
           where: { CommentId: ele.commentId },
         });
         const findRecomments = findRecomment[index] || "";
-        console.log("보여줘", findRecomments.comment);
+
         return {
           commentId: ele.commentId,
           nickname: ele.nickname,
           rate: ele.rate,
           createDate: ele.createdAt,
           comment: ele.comment,
-          pictures: [ele.pictures] || "",
+          pictures: !ele.pictures
+            ? ""
+            : ele.pictures.substring(0, 4) == "http"
+            ? ele.pictures.split(",")
+            : [ele.pictures.split(",").slice(0, 2).join(",")],
+
           reply: {
             comment: findRecomments.comment || "",
             createDate: findRecomments.createdAt || "",
@@ -98,7 +103,11 @@ class PlacesRepository {
           where: { PlaceId: ele.placeId },
         });
         return {
-          picture: ele.pictures || "",
+          picture: !ele.pictures
+            ? ""
+            : ele.pictures.substring(0, 4) == "http"
+            ? ele.pictures.split(",")
+            : [ele.pictures.split(",").slice(0, 2).join(",")],
           name: ele.name || "",
           star: ele.star || 0,
           commentCount: findPlacename.length || 0,
