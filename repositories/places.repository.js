@@ -112,7 +112,7 @@ class PlacesRepository {
           star: ele.star || 0,
           commentCount: findPlacename.length || 0,
           like: false,
-          system: ele.system || "",
+          system: !ele.system ? "" : ele.system.split(","),
           location: {
             city: ele.city || "",
             address: ele.address || "",
