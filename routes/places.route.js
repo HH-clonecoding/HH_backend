@@ -87,88 +87,80 @@ router.post("/:cityID", placesController.mainPage);
  *      responses:
  *        200:
  *          description: 모텔 정보 조회 성공
- *          content:
- *            application/json:
- *              schema:
- *                type: object
- *                properties:
- *                  picture:
- *                    type: string
- *                    description: 모텔 이미지 URL
- *                  name:
- *                    type: string
- *                    description: 모텔 이름
- *                  star:
- *                    type: integer
- *                    description: 모텔 등급 (1~5)
- *                  commentCount:
- *                    type: integer
- *                    description: 모텔 리뷰 개수
- *                  like:
- *                    type: boolean
- *                    description: 모텔 좋아요 여부
- *                  system:
- *                    type: string
- *                    description: 모텔 시설
- *                  location:
- *                    type: object
- *                    properties:
- *                      city:
- *                        type: string
- *                        description: 도시 이름
- *                      address:
- *                        type: string
- *                        description: 모텔 주소
- *                  totalRoom:
- *                    type: integer
- *                    description: 모텔 총 방 개수
- *                  comments:
- *                    type: array
- *                    description: 모텔 리뷰 목록
- *                    items:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              motelList:
+ *                type: array
+ *                description: 검색된 모텔 목록
+ *                items:
+ *                  type: object
+ *                  properties:
+ *                    picture:
+ *                      type: string
+ *                      description: 모텔 이미지 URL
+ *                    name:
+ *                      type: string
+ *                      description: 모텔 이름
+ *                    star:
+ *                      type: integer
+ *                      description: 모텔 등급 (1~5)
+ *                    commentCount:
+ *                      type: integer
+ *                      description: 모텔 리뷰 개수
+ *                    location:
  *                      type: object
  *                      properties:
- *                        commentId:
- *                          type: integer
- *                          description: 리뷰 ID
- *                        nickname:
+ *                        city:
  *                          type: string
- *                          description: 리뷰어 닉네임
- *                        rate:
- *                          type: integer
- *                          description: 리뷰어가 매긴 별점 (1~5)
- *                        createDate:
+ *                          description: 도시 이름
+ *                        address:
  *                          type: string
- *                          format: date-time
- *                          description: 리뷰 작성일
- *                        comment:
- *                          type: string
- *                          description: 리뷰 내용
- *                        pictures:
- *                          type: array
- *                          description: 리뷰에 첨부된 사진 목록
- *                          items:
+ *                          description: 모텔 주소
+ *                    comments:
+ *                      type: array
+ *                      description: 모텔 리뷰 목록
+ *                      items:
+ *                        type: object
+ *                        properties:
+ *                          commentId:
+ *                            type: integer
+ *                            description: 리뷰 ID
+ *                          nickname:
  *                            type: string
- *                            description: 사진 URL
- *                        reply:
- *                          type: object
- *                          properties:
- *                            comment:
+ *                            description: 리뷰어 닉네임
+ *                          rate:
+ *                            type: integer
+ *                            description: 리뷰어가 매긴 별점 (1~5)
+ *                          createDate:
+ *                            type: string
+ *                            format: date-time
+ *                            description: 리뷰 작성일
+ *                          comment:
+ *                            type: string
+ *                            description: 리뷰 내용
+ *                          pictures:
+ *                            type: array
+ *                            description: 리뷰에 첨부된 사진 목록
+ *                            items:
  *                              type: string
- *                              description: 리뷰 답변 내용
- *                            createDate:
- *                              type: string
- *                              format: date-time
- *                              description: 리뷰 답변 작성일
+ *                              description: 사진 URL
+ *                          reply:
+ *                            type: object
+ *                            properties:
+ *                              comment:
+ *                                type: string
+ *                                description: 리뷰 답변 내용
+ *                              createDate:
+ *                                type: string
+ *                                format: date-time
+ *                                description: 리뷰 답변 작성일
  *        401:
  *          description: 모텔 정보 조회 실패
- *          content:
- *            application/json:
- *              schema:
- *                type: object
- *                properties:
- *                  message:
- *                    type: string
+ *          schema:
+ *            properties:
+ *              message:
+ *                type: string
  */
 
 router.get("/:placeID", placesController.Review);
