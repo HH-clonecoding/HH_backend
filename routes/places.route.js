@@ -8,28 +8,30 @@ const placesController = new PlacesController();
 /**
  * @swagger
  * paths:
- *  /api/place/{cityID}:
- *   post:
+ *  /api/place/:
+ *   get:
  *    tags:
  *    - /place
  *    description: 모텔 정보 조회
  *    parameters:
- *    - in: path
- *      name: cityID
- *      description: 예시) city 인천 데이터가 6개 있다고 가정하고 splitNumber가 4, cityID 가 1 이라면 4개의 값을 보여줍니다. cityID가 2로 바꾸면 나머지 2개의 값을 보여줍니다.
+ *    - in: query
+ *      name: city
+ *      description: city 도시 이름입니다. 03/26 mock데이터 = 인천 10개 ,서울 6개
  *      required: true
  *      schema:
  *        type: string
- *    - in: body
- *      name: body
+ *    - in: query
+ *      name: splitNumber
+ *      description: splitNumber = 자르고 싶은 숫자입니다.
  *      required: true
  *      schema:
- *        type: object
- *        properties:
- *          city:
- *            type: string
- *          splitNumber:
- *            type: integer
+ *        type: string
+ *    - in: query
+ *      name: splitPageNumber
+ *      description:  splitPageNumber = 자른 데이터의 페이지입니다.
+ *      required: true
+ *      schema:
+ *        type: string
  *
  *    responses:
  *     200:
