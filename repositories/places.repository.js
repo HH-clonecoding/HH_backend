@@ -7,14 +7,14 @@ class PlacesRepository {
     this.likeService = new LikeService();
   }
 
-  getSplitCity = async (cityID, city, splitNumber) => {
+  getSplitCity = async (splitPageNumber, city, splitNumber) => {
     const total = await Places.count({ where: { city } });
 
     // 게시글 가져오기
     const placesSplit = await Places.findAll({
       where: { city }, // 도시 조건 의문 해결 cityID를 지역 쿼리로 생각하자
       order: [["createdAt", "DESC"]], // createdAt 역순으로 정렬
-      offset: splitNumber * (cityID - 1), // * (page - 1) 페이지당 게시글 수만큼 건너뛰기
+      offset: splitNumber * (splitPageNumber - 1), // * (page - 1) 페이지당 게시글 수만큼 건너뛰기
       limit: splitNumber, // 페이지당 게시글 수만큼 가져오기
       attributes: ["pictures", "name", "star", "placeId"],
     });

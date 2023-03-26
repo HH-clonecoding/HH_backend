@@ -9,8 +9,7 @@ class PlacesController {
   }
 
   mainPage = async (req, res, next) => {
-    const { cityID } = req.params;
-    const { city, splitNumber } = req.body;
+    const { city, splitNumber, splitPageNumber } = req.query;
 
     const messages = {
       "string.base": "이 필드는 문자열로 이루어져야 합니다.",
@@ -19,7 +18,7 @@ class PlacesController {
     };
 
     const schema = Joi.object({
-      cityID: Joi.number().messages({
+      splitPageNumber: Joi.string().messages({
         ...messages,
         "string.base": "cityID 필드는 숫자로 이루어져야 합니다.",
       }),
@@ -27,14 +26,18 @@ class PlacesController {
         ...messages,
         "string.base": "city 필드는 문자열로 이루어져야 합니다.",
       }),
-      splitNumber: Joi.number().messages({
+      splitNumber: Joi.string().messages({
         ...messages,
         "string.base": "splitNumber 필드는 숫자로 이루어져야 합니다.",
       }),
     });
 
     const validate = schema.validate(
-      { cityID: cityID, city: city, splitNumber: splitNumber },
+      {
+        splitPageNumber: splitPageNumber,
+        city: city,
+        splitNumber: splitNumber,
+      },
       { abortEarly: false }
     );
 
@@ -60,11 +63,10 @@ class PlacesController {
       }
 
       const city_list = await this.placesService.getSplitCity(
-        cityID,
+        splitPageNumber,
         city,
         Number(splitNumber)
       );
-      city_list;
 
       return res.status(200).json({ motelList: city_list });
       // artist_list == false ? res.status(sc.BAD_REQUEST).send(au.successFalse(rm.DB_NOT_MATCHED_ERROR)) : res.status(sc.OK).send(au.successTrue(rm.DB_SUCCESS, artist_list));
