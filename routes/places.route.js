@@ -67,7 +67,7 @@ const placesController = new PlacesController();
  *
  */
 
-router.post("/:cityID", placesController.mainPage);
+router.get("/", placesController.mainPage); //:cityID 삭제 get 요청으로 바꾸고 쿼리문으로 변경하기
 
 /**
  * @swagger
