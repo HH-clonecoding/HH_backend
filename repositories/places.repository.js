@@ -82,7 +82,7 @@ class PlacesRepository {
       where: { placeId: placeID }, // 도시 조건 의문 해결 cityID를 지역 쿼리로 생각하자
       order: [["createdAt", "DESC"]], // createdAt 역순으로 정렬
       attributes: [
-        [sequelize.literal('IFNULL("picture", "")'), "picture"],
+        "pictures",
         "name",
         "star",
         "placeId",
@@ -98,15 +98,15 @@ class PlacesRepository {
           where: { PlaceId: ele.placeId },
         });
         return {
-          picture: ele.picture,
-          name: ele.name,
-          star: ele.star,
+          picture: ele.pictures || "",
+          name: ele.name || "",
+          star: ele.star || 0,
           commentCount: findPlacename.length || 0,
           like: false,
-          system: ele.system,
+          system: ele.system || "",
           location: {
-            city: ele.city,
-            address: ele.address,
+            city: ele.city || "",
+            address: ele.address || "",
           },
         };
       })
@@ -146,7 +146,6 @@ class PlacesRepository {
             placeID,
             boolValue
           ),
-
           system: ele.system,
           location: {
             city: ele.city,
