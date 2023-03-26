@@ -5,9 +5,9 @@ class PlacesService {
     this.placesRepository = new PlacesRepository();
   }
 
-  getSplitCity = async (cityID, city, splitNumber) => {
+  getSplitCity = async (splitPageNumber, city, splitNumber) => {
     const replacesSplit = await this.placesRepository.getSplitCity(
-      cityID,
+      splitPageNumber,
       city,
       splitNumber
     );
