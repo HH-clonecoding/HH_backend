@@ -15,7 +15,7 @@ class RoomsService {
       RandomBox.push(Random[i].roomName);
     }
 
-    return RandomBox[findOneCount].replace(/\s/g, "");
+    return RandomBox[findOneCount].trim();
   };
 
   findRoomsDetail = async (placeId) => {
