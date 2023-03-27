@@ -63,9 +63,16 @@ class PlacesRepository {
           comment: ele.comment,
           pictures: !ele.pictures
             ? ""
-            : ele.pictures.substring(0, 4) == "http"
-            ? ele.pictures.split(",")
-            : [ele.pictures.split(",").slice(0, 2).join(",")],
+            : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
+            ? ele.pictures.replace(/\s/g, "").split(",")
+            : [
+                ele.pictures
+                  .replace(/\s/g, "")
+                  .split(",")
+                  .slice(0, 2)
+                  .trim()
+                  .join(","),
+              ],
           reply: {
             comment: findRecomments.comment || "",
             createDate: findRecomments.createdAt || "",
@@ -116,14 +123,20 @@ class PlacesRepository {
         return {
           picture: !ele.pictures
             ? ""
-            : ele.pictures.substring(0, 4) == "http"
-            ? ele.pictures.split(",")
-            : [ele.pictures.split(",").slice(0, 2).join(",")],
+            : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
+            ? ele.pictures.replace(/\s/g, "").split(",")
+            : [
+                ele.pictures
+                  .replace(/\s/g, "")
+                  .split(",")
+                  .slice(0, 2)
+                  .join(","),
+              ],
           name: ele.name || "",
           star: roundedAvg || 0,
           commentCount: findPlacename.length || 0,
           like: false,
-          system: !ele.system ? "" : ele.system.split(","),
+          system: !ele.system ? "" : ele.system.replace(/\s/g, "").split(","),
           location: {
             city: ele.city || "",
             address: ele.address || "",
@@ -166,7 +179,7 @@ class PlacesRepository {
             placeID,
             boolValue
           ),
-          system: ele.system,
+          system: ele.system.replace(/\s/g, ""),
           location: {
             city: ele.city,
             address: ele.address,
