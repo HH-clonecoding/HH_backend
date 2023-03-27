@@ -12,6 +12,12 @@ module.exports = {
       PlaceId: {
         allowNull: false,
         type: Sequelize.INTEGER,
+        references: {
+          model: "Places",
+          key: "placeId",
+        },
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       },
       pictures: {
         allowNull: false,
@@ -36,7 +42,17 @@ module.exports = {
         defaultValue: Sequelize.fn("now"),
       },
     });
+    await queryInterface.addColumn("Rooms", "placeId", {
+      type: Sequelize.INTEGER,
+      references: {
+        model: "Places",
+        key: "placeId",
+      },
+      onUpdate: "CASCADE",
+      onDelete: "CASCADE",
+    });
   },
+
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable("Rooms");
   },

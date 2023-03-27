@@ -28,12 +28,6 @@ module.exports = (sequelize, DataTypes) => {
       PlaceId: {
         allowNull: false,
         type: DataTypes.INTEGER,
-        references: {
-          model: "Places",
-          key: "placeId",
-        },
-        // onDelete: "CASCADE",
-        //  배포시 다시 열어줘야함
       },
       pictures: {
         allowNull: false,

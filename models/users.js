@@ -1,5 +1,5 @@
-'use strict'
-const { Model } = require('sequelize')
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     /**
@@ -11,14 +11,14 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
 
       this.hasOne(models.Likes, {
-        sourceKey: 'userId',
-        foreignKey: 'UserId',
-      })
+        sourceKey: "userId",
+        foreignKey: "UserId",
+      });
 
       this.hasMany(models.Comments, {
-        sourceKey: 'userId',
-        foreignKey: 'UserId',
-      })
+        sourceKey: "userId",
+        foreignKey: "UserId",
+      });
     }
   }
   Users.init(
@@ -42,6 +42,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      account_email: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       refreshToken: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -59,8 +63,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'Users',
+      modelName: "Users",
     }
-  )
-  return Users
-}
+  );
+  return Users;
+};

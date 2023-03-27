@@ -24,7 +24,7 @@ class PlacesRepository {
         const findPlacename = await Comments.findAll({
           where: { PlaceId: ele.placeId },
         });
-
+        console.log(findPlacename);
         return {
           picture: ele.pictures || "",
           name: ele.name || "",
@@ -98,10 +98,21 @@ class PlacesRepository {
     });
 
     const reNameInfo = await Promise.all(
-      getDetailInfo.map(async (ele) => {
+      getDetailInfo.map(async (ele, index) => {
         const findPlacename = await Comments.findAll({
           where: { PlaceId: ele.placeId },
         });
+
+        const initialValue = 0;
+
+        for (const i = 0; i < findPlacename.length; i++) {}
+
+        findPlacename[index].reduce(
+          (accumulator, currentValue) => accumulator + currentValue,
+          initialValue
+        ) / findPlacename.length;
+
+        console.log(initialValue);
         return {
           picture: !ele.pictures
             ? ""
