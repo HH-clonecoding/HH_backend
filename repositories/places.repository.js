@@ -1,10 +1,12 @@
 const { Places, Comments, Re_comments } = require("../models");
 const LikeService = require("../services/likes.service");
+const RoomsService = require("../services/rooms.service");
 const sequelize = require("sequelize");
 
 class PlacesRepository {
   constructor() {
     this.likeService = new LikeService();
+    this.roomsService = new RoomsService();
   }
 
   getSplitCity = async (splitPageNumber, city, splitNumber) => {
@@ -24,7 +26,7 @@ class PlacesRepository {
         const findPlacename = await Comments.findAll({
           where: { PlaceId: ele.placeId },
         });
-
+        console.log(findPlacename);
         return {
           picture: ele.pictures || "",
           name: ele.name || "",
@@ -55,6 +57,7 @@ class PlacesRepository {
         return {
           commentId: ele.commentId,
           nickname: ele.nickname,
+          stayedroom: await this.roomsService.findRamdomRoomName(),
           rate: ele.rate,
           createDate: ele.createdAt,
           comment: ele.comment,
@@ -63,7 +66,6 @@ class PlacesRepository {
             : ele.pictures.substring(0, 4) == "http"
             ? ele.pictures.split(",")
             : [ele.pictures.split(",").slice(0, 2).join(",")],
-
           reply: {
             comment: findRecomments.comment || "",
             createDate: findRecomments.createdAt || "",
@@ -98,10 +100,19 @@ class PlacesRepository {
     });
 
     const reNameInfo = await Promise.all(
-      getDetailInfo.map(async (ele) => {
+      getDetailInfo.map(async (ele, index) => {
         const findPlacename = await Comments.findAll({
           where: { PlaceId: ele.placeId },
         });
+
+        let initialValue = 0;
+        for (let i = 0; i < findPlacename.length; i++) {
+          initialValue += findPlacename[i].rate;
+        }
+
+        const starAvg = initialValue / findPlacename.length;
+        const roundedAvg = Math.round(starAvg * 10) / 10;
+
         return {
           picture: !ele.pictures
             ? ""
@@ -109,7 +120,7 @@ class PlacesRepository {
             ? ele.pictures.split(",")
             : [ele.pictures.split(",").slice(0, 2).join(",")],
           name: ele.name || "",
-          star: ele.star || 0,
+          star: roundedAvg || 0,
           commentCount: findPlacename.length || 0,
           like: false,
           system: !ele.system ? "" : ele.system.split(","),

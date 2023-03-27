@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: "placeId",
         foreignKey: "PlaceId",
       });
+      this.hasMany(models.Rooms, {
+        sourceKey: "placeId",
+        foreignKey: "PlaceId",
+      });
     }
   }
   Places.init(
@@ -37,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       star: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: true,
       },
       pictures: {
