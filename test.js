@@ -1,11 +1,4 @@
-let test = 1.263336341;
-let initialValue = 0; // 적절한 값을 할당합니다.
+const test =
+  "  http://image.goodchoice.kr/resize_490x348/affiliate/2016/08/17/57b42b65b0263.jpg, http://image.goodchoice.kr/resize_490x348/affiliate/2016/08/17/57b42b65b0263.jpg";
 
-for (let i = 0; i < 5; i++) {
-  initialValue += test;
-}
-
-const starAvg = 1.333;
-const roundedAvg = Math.round(starAvg * 10) / 10;
-
-console.log(roundedAvg); // 8
+console.log(test.replace(/\s/g, "").split(","));
