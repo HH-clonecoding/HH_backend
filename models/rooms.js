@@ -41,6 +41,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.STRING,
       },
+      maxPeople: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
+      },
+      smoking: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
+      },
       createdAt: {
         allowNull: false,
         type: DataTypes.DATE,
