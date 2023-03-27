@@ -1,4 +1,5 @@
 const PlacesService = require("../services/places.service");
+const RoomsService = require("../services/rooms.service");
 const CustomError = require("../middlewares/errorHandler");
 const authMiddleware = require("../middlewares/authMiddleware");
 const Joi = require("joi");
@@ -6,6 +7,7 @@ const Joi = require("joi");
 class PlacesController {
   constructor() {
     this.placesService = new PlacesService();
+    this.roomsService = new RoomsService();
   }
 
   mainPage = async (req, res, next) => {
@@ -82,6 +84,7 @@ class PlacesController {
   Review = async (req, res, next) => {
     const boolValue = req.query.boolValue;
     const { placeID } = req.params;
+    const findRoomsDetail = await this.roomsService.findRoomsDetail(placeID);
 
     const messages = {
       "string.base": "이 필드는 숫자로 이루어져야 합니다.",
@@ -158,6 +161,7 @@ class PlacesController {
           system: system,
           location: location,
           totalRoom: buildingInfo,
+          roomdetail: findRoomsDetail,
           comments: Review,
         });
       } else {
@@ -187,6 +191,7 @@ class PlacesController {
           system: system,
           location: location,
           totalRoom: buildingInfo,
+          roomdetail: findRoomsDetail,
           comments: Review,
         });
       }

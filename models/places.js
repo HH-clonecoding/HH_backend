@@ -22,6 +22,10 @@ module.exports = (sequelize, DataTypes) => {
         sourceKey: "placeId",
         foreignKey: "PlaceId",
       });
+      this.hasMany(models.Rooms, {
+        sourceKey: "placeId",
+        foreignKey: "PlaceId",
+      });
     }
   }
   Places.init(

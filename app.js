@@ -2,8 +2,9 @@ const express = require("express");
 const app = express();
 
 const cors = require("cors");
-const { sequelize } = require("./models/index.js");
+
 const { swaggerUi, specs } = require("./swagger/swagger");
+const { sequelize } = require("./models");
 
 const indexRouter = require("./routes/index");
 
@@ -16,6 +17,15 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log("Sync success");
+  })
+  .catch((error) => {
+    console.error("Sync error", error);
+  });
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

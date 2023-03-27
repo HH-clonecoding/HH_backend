@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Users extends Model {
+  class Rooms extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,46 +9,37 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-
-      this.hasOne(models.Likes, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
-      });
-
-      this.hasMany(models.Comments, {
-        sourceKey: "userId",
-        foreignKey: "UserId",
+      this.belongsTo(models.Places, {
+        targetKey: "placeId",
+        foreignKey: "PlaceId",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       });
     }
   }
-  Users.init(
+  Rooms.init(
     {
-      // id: {
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      //   type: DataTypes.INTEGER,
-      // },
-      userId: {
-        type: DataTypes.STRING,
+      roomId: {
+        allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      PlaceId: {
         allowNull: false,
+        type: DataTypes.INTEGER,
       },
-      nickname: {
-        type: DataTypes.STRING,
+      pictures: {
         allowNull: false,
-      },
-      password: {
         type: DataTypes.STRING,
+      },
+      roomName: {
         allowNull: false,
-      },
-      account_email: {
         type: DataTypes.STRING,
-        allowNull: true,
       },
-      refreshToken: {
+      option: {
+        allowNull: false,
         type: DataTypes.STRING,
-        allowNull: true,
       },
       createdAt: {
         allowNull: false,
@@ -63,8 +54,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Users",
+      modelName: "Rooms",
     }
   );
-  return Users;
+  return Rooms;
 };
