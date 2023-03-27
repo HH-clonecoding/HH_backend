@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Places extends Model {
+  class Rooms extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,60 +9,43 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-
-      this.hasMany(models.Likes, {
-        sourceKey: "placeId",
+      this.belongsTo(models.Places, {
+        targetKey: "placeId",
         foreignKey: "PlaceId",
-      });
-      this.hasMany(models.Comments, {
-        sourceKey: "placeId",
-        foreignKey: "PlaceId",
-      });
-      this.hasMany(models.Re_comments, {
-        sourceKey: "placeId",
-        foreignKey: "PlaceId",
-      });
-      this.hasMany(models.Rooms, {
-        sourceKey: "placeId",
-        foreignKey: "PlaceId",
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       });
     }
   }
-  Places.init(
+  Rooms.init(
     {
-      placeId: {
+      roomId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
-      name: {
-        type: DataTypes.STRING,
+      PlaceId: {
         allowNull: false,
-      },
-      star: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        references: {
+          model: "Places",
+          key: "placeId",
+        },
+        // onDelete: "CASCADE",
+        //  배포시 다시 열어줘야함
       },
       pictures: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      city: {
-        type: DataTypes.STRING,
         allowNull: false,
-      },
-      address: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
-      totalRoom: {
-        type: DataTypes.INTEGER,
+      roomName: {
         allowNull: false,
-      },
-      system: {
         type: DataTypes.STRING,
+      },
+      option: {
         allowNull: false,
+        type: DataTypes.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -77,8 +60,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Places",
+      modelName: "Rooms",
     }
   );
-  return Places;
+  return Rooms;
 };
