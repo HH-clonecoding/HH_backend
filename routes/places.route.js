@@ -69,7 +69,7 @@ const placesController = new PlacesController();
  *
  */
 
-router.get("/", placesController.mainPage); //:cityID 삭제 get 요청으로 바꾸고 쿼리문으로 변경하기
+router.get("/", placesController.mainPage); // main 페이지
 
 /**
  * @swagger
@@ -165,6 +165,12 @@ router.get("/", placesController.mainPage); //:cityID 삭제 get 요청으로 �
  *                type: string
  */
 
-router.get("/:placeID", placesController.Review);
+router.get("/:placeID", placesController.Review); // place 상세보기
+
+router.get("/rooms/:placeID", placesController.placeRoomDetail); // place 객실선택
+
+router.get("/location/:placeID", placesController.placeLocation); // place 위치/정보
+
+router.get("/rooms/:placeID/comments", placesController.placeComments); // place 후기
 
 module.exports = router;

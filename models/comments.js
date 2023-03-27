@@ -62,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       rate: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       createdAt: {
