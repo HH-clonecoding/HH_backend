@@ -31,11 +31,13 @@ class LikeService {
           const addLike = this.likeRepository.addLike(placeID, userId);
           const message = "게시글의 좋아요를 등록하였습니다.";
           addLike;
+
           return true;
         } else {
           const deleteLike = this.likeRepository.deleteLike(placeID, userId);
           const message = "게시글의 좋아요를 취소하였습니다.";
           deleteLike;
+          console.log(deleteLike);
           return false;
         }
       } catch (error) {
