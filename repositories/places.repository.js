@@ -26,9 +26,20 @@ class PlacesRepository {
         const findPlacename = await Comments.findAll({
           where: { PlaceId: ele.placeId },
         });
-        console.log(findPlacename);
+
         return {
-          picture: ele.pictures || "",
+          picture: !ele.pictures
+            ? ""
+            : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
+            ? ele.pictures.replace(/\s/g, "").split(",")
+            : [
+                ele.pictures
+                  .replace(/\s/g, "")
+                  .split(",")
+                  .slice(0, 2)
+                  .trim()
+                  .join(","),
+              ],
           name: ele.name || "",
           star: ele.star || "",
           commentCount: findPlacename.length || 0,
