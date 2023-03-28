@@ -33,11 +33,11 @@ class PlacesService {
     return DetailInfo;
   };
 
-  getDetailInfo = async (userId, placeID, boolValue) => {
+  getDetailInfo = async (userId, placeID, likeToggle) => {
     const DetailInfo = await this.placesRepository.getDetailInfo(
       userId,
       placeID,
-      boolValue
+      likeToggle
     );
 
     return DetailInfo;
