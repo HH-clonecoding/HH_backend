@@ -26,7 +26,18 @@ class RoomsService {
         selectRoomDetailArray.push(findRoomsDetail[index].option);
 
         return {
-          pictures: ele.pictures,
+          pictures: !ele.pictures
+            ? ""
+            : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
+            ? ele.pictures.replace(/\s/g, "").split(",")
+            : [
+                ele.pictures
+                  .replace(/\s/g, "")
+                  .split(",")
+                  .slice(0, 2)
+                  .trim()
+                  .join(","),
+              ],
           roomname: ele.roomname,
           option: selectRoomDetailArray,
           minPeople: Math.floor(Math.random() * ele.maxPeople) + 1,
