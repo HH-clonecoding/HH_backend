@@ -41,7 +41,7 @@ class SocialService {
 
     // 유저 nickname 중복 검사
     if (isSameNickname) {
-      throw CustomError('이미 가입된 닉네임이 존재합니다.', 400, false)
+      throw new CustomError('이미 가입된 닉네임이 존재합니다.', 400, false)
     }
 
     const createUser = await this.socialRepository.createUser(userId, nickname)
