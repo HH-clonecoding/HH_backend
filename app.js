@@ -1,46 +1,47 @@
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
 
-const cors = require('cors')
-const { sequelize } = require('./models/index.js')
-const { swaggerUi, specs } = require('./swagger/swagger')
+const cors = require("cors");
 
-const indexRouter = require('./routes/index')
+const { swaggerUi, specs } = require("./swagger/swagger");
+const { sequelize } = require("./models");
 
-const port = 3002
+const indexRouter = require("./routes/index");
+
+const port = 3002;
 
 app.use(
   cors({
-    origin: '*',
+    origin: "*",
     credentials: true,
     optionsSuccessStatus: 200,
   })
-)
+);
 
 sequelize
   .sync({ force: false })
   .then(() => {
-    console.log('Sync success')
+    console.log("Sync success");
   })
   .catch((error) => {
-    console.error('Sync error', error)
-  })
+    console.error("Sync error", error);
+  });
 
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-app.use('/api', indexRouter)
+app.use("/api", indexRouter);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use((err, req, res, next) => {
-  console.log(err)
+  console.log(err);
   return res.status(err.status || 500).json({
     success: err.expect,
-    errorMessage: err.message || '서버 에러가 발생했습니다.',
-  })
-})
+    errorMessage: err.message || "서버 에러가 발생했습니다.",
+  });
+});
 
 app.listen(port, () => {
-  console.log(port, '포트로 서버가 열렸어요!')
-})
+  console.log(port, "포트로 서버가 열렸어요!");
+});
