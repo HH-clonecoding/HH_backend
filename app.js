@@ -17,6 +17,15 @@ app.use(
   })
 )
 
+sequelize
+  .sync({ force: false })
+  .then(() => {
+    console.log('Sync success')
+  })
+  .catch((error) => {
+    console.error('Sync error', error)
+  })
+
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 

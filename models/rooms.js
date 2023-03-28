@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Comments extends Model {
+  class Rooms extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,18 +9,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.Re_comments, {
-        sourceKey: "commentId",
-        foreignKey: "CommentId",
-      });
-
-      this.belongsTo(models.Users, {
-        targetKey: "userId",
-        foreignKey: "UserId",
-        // onDelete: "CASCADE",
-        //  배포시 다시 열어줘야함
-      });
-      //긴급수정
       this.belongsTo(models.Places, {
         targetKey: "placeId",
         foreignKey: "PlaceId",
@@ -29,41 +17,37 @@ module.exports = (sequelize, DataTypes) => {
       });
     }
   }
-  Comments.init(
+  Rooms.init(
     {
-      commentId: {
+      roomId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
       PlaceId: {
+        allowNull: false,
         type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      UserId: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      nickname: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      },
-      comment: {
-        type: DataTypes.STRING,
-        allowNull: false,
       },
       pictures: {
+        allowNull: false,
         type: DataTypes.STRING,
+      },
+      roomName: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      option: {
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      maxPeople: {
         allowNull: true,
-      },
-      RecomId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
       },
-      rate: {
-        type: DataTypes.FLOAT,
-        allowNull: false,
+      smoking: {
+        allowNull: true,
+        type: DataTypes.INTEGER,
       },
       createdAt: {
         allowNull: false,
@@ -78,8 +62,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "Comments",
+      modelName: "Rooms",
     }
   );
-  return Comments;
+  return Rooms;
 };

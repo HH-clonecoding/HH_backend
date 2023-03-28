@@ -1,5 +1,6 @@
 const express = require("express");
 // const authMiddleware = require("../middlewares/authMiddleware"); // router.get 추후 미들웨어 사용해야 한다 like 사용하기 위해서
+const allusersMiddleware = require("../middlewares/allusersMiddleware");
 const router = express.Router();
 
 const PlacesController = require("../controllers/places.controller");
@@ -69,7 +70,7 @@ const placesController = new PlacesController();
  *
  */
 
-router.get("/", placesController.mainPage); //:cityID 삭제 get 요청으로 바꾸고 쿼리문으로 변경하기
+router.get("/", placesController.mainPage); // main 페이지
 
 /**
  * @swagger
@@ -165,6 +166,12 @@ router.get("/", placesController.mainPage); //:cityID 삭제 get 요청으로 �
  *                type: string
  */
 
-router.get("/:placeID", placesController.Review);
+router.get("/:placeID", allusersMiddleware, placesController.Review); // place 상세보기
+
+router.get("/rooms/:placeID", placesController.placeRoomDetail); // place 객실선택
+
+router.get("/location/:placeID", placesController.placeLocation); // place 위치/정보
+
+router.get("/rooms/:placeID/comments", placesController.placeComments); // place 후기
 
 module.exports = router;

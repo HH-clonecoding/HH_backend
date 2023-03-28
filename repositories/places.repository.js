@@ -1,10 +1,12 @@
 const { Places, Comments, Re_comments } = require("../models");
 const LikeService = require("../services/likes.service");
+const RoomsService = require("../services/rooms.service");
 const sequelize = require("sequelize");
 
 class PlacesRepository {
   constructor() {
     this.likeService = new LikeService();
+    this.roomsService = new RoomsService();
   }
 
   getSplitCity = async (splitPageNumber, city, splitNumber) => {
@@ -26,7 +28,18 @@ class PlacesRepository {
         });
 
         return {
-          picture: ele.pictures || "",
+          picture: !ele.pictures
+            ? ""
+            : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
+            ? ele.pictures.replace(/\s/g, "").split(",")
+            : [
+                ele.pictures
+                  .replace(/\s/g, "")
+                  .split(",")
+                  .slice(0, 2)
+                  .trim()
+                  .join(","),
+              ],
           name: ele.name || "",
           star: ele.star || "",
           commentCount: findPlacename.length || 0,
@@ -55,15 +68,22 @@ class PlacesRepository {
         return {
           commentId: ele.commentId,
           nickname: ele.nickname,
+          stayedroom: await this.roomsService.findRamdomRoomName(),
           rate: ele.rate,
           createDate: ele.createdAt,
           comment: ele.comment,
           pictures: !ele.pictures
             ? ""
-            : ele.pictures.substring(0, 4) == "http"
-            ? ele.pictures.split(",")
-            : [ele.pictures.split(",").slice(0, 2).join(",")],
-
+            : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
+            ? ele.pictures.replace(/\s/g, "").split(",")
+            : [
+                ele.pictures
+                  .replace(/\s/g, "")
+                  .split(",")
+                  .slice(0, 2)
+                  .trim()
+                  .join(","),
+              ],
           reply: {
             comment: findRecomments.comment || "",
             createDate: findRecomments.createdAt || "",
@@ -98,21 +118,36 @@ class PlacesRepository {
     });
 
     const reNameInfo = await Promise.all(
-      getDetailInfo.map(async (ele) => {
+      getDetailInfo.map(async (ele, index) => {
         const findPlacename = await Comments.findAll({
           where: { PlaceId: ele.placeId },
         });
+
+        let initialValue = 0;
+        for (let i = 0; i < findPlacename.length; i++) {
+          initialValue += findPlacename[i].rate;
+        }
+
+        const starAvg = initialValue / findPlacename.length;
+        const roundedAvg = Math.round(starAvg * 10) / 10;
+
         return {
           picture: !ele.pictures
             ? ""
-            : ele.pictures.substring(0, 4) == "http"
-            ? ele.pictures.split(",")
-            : [ele.pictures.split(",").slice(0, 2).join(",")],
+            : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
+            ? ele.pictures.replace(/\s/g, "").split(",")
+            : [
+                ele.pictures
+                  .replace(/\s/g, "")
+                  .split(",")
+                  .slice(0, 2)
+                  .join(","),
+              ],
           name: ele.name || "",
-          star: ele.star || 0,
+          star: roundedAvg || 0,
           commentCount: findPlacename.length || 0,
           like: false,
-          system: !ele.system ? "" : ele.system.split(","),
+          system: !ele.system ? "" : ele.system.replace(/\s/g, "").split(","),
           location: {
             city: ele.city || "",
             address: ele.address || "",
@@ -124,8 +159,9 @@ class PlacesRepository {
     return reNameInfo;
   };
 
-  getDetailInfo = async (userId, placeID, boolValue) => {
+  getDetailInfo = async (userId, placeID, likeToggle) => {
     // 게시글 가져오기
+
     const getDetailInfo = await Places.findAll({
       where: { placeId: placeID }, // 도시 조건 의문 해결 cityID를 지역 쿼리로 생각하자
       order: [["createdAt", "DESC"]], // createdAt 역순으로 정렬
@@ -153,9 +189,9 @@ class PlacesRepository {
           like: await this.likeService.findCheckAndAdd(
             userId,
             placeID,
-            boolValue
+            likeToggle
           ),
-          system: ele.system,
+          system: ele.system.replace(/\s/g, ""),
           location: {
             city: ele.city,
             address: ele.address,
