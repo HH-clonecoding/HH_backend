@@ -150,6 +150,7 @@ class PlacesRepository {
 
   getDetailInfo = async (userId, placeID, boolValue) => {
     // 게시글 가져오기
+
     const getDetailInfo = await Places.findAll({
       where: { placeId: placeID }, // 도시 조건 의문 해결 cityID를 지역 쿼리로 생각하자
       order: [["createdAt", "DESC"]], // createdAt 역순으로 정렬

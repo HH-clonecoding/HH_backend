@@ -1,5 +1,6 @@
 const express = require("express");
 // const authMiddleware = require("../middlewares/authMiddleware"); // router.get 추후 미들웨어 사용해야 한다 like 사용하기 위해서
+const allusersMiddleware = require("../middlewares/allusersMiddleware");
 const router = express.Router();
 
 const PlacesController = require("../controllers/places.controller");
@@ -165,7 +166,7 @@ router.get("/", placesController.mainPage); // main 페이지
  *                type: string
  */
 
-router.get("/:placeID", placesController.Review); // place 상세보기
+router.get("/:placeID", allusersMiddleware, placesController.Review); // place 상세보기
 
 router.get("/rooms/:placeID", placesController.placeRoomDetail); // place 객실선택
 

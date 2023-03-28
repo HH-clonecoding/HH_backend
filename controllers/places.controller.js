@@ -1,7 +1,6 @@
 const PlacesService = require("../services/places.service");
 const RoomsService = require("../services/rooms.service");
 const CustomError = require("../middlewares/errorHandler");
-const authMiddleware = require("../middlewares/authMiddleware");
 const Joi = require("joi");
 
 class PlacesController {
@@ -119,9 +118,9 @@ class PlacesController {
         );
       }
 
-      if (boolValue == true) {
-        authMiddleware;
+      if (res.locals.user) {
         const { userId } = res.locals.user;
+
         const getUserDetailInfo = await this.placesService.getDetailInfo(
           userId,
           placeID,
@@ -147,10 +146,10 @@ class PlacesController {
           name: name,
           star: star,
           commentCount: commentCount,
-          totalRoom: buildingInfo,
           like: like,
           system: system,
           location: location,
+          totalRoom: buildingInfo,
         });
       } else {
         const getDetailInfo = await this.placesService.getNoAuthDetailInfo(
