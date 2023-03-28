@@ -81,7 +81,7 @@ class PlacesController {
   };
 
   Review = async (req, res, next) => {
-    const boolValue = req.query.boolValue; // 추후 좋아요 쿼리 등록
+    const likeToggle = req.query.likeToggle; // 추후 좋아요 쿼리 등록
     const { placeID } = req.params;
 
     const messages = {
@@ -118,13 +118,13 @@ class PlacesController {
         );
       }
 
+      // 프론트에서 어떻게 보내냐에 따라서 if문의 조건이 달라져야함
       if (res.locals.user) {
-        const { userId } = res.locals.user;
-
+        const { userId } = res.locals.user; // 프론트에서 어떻게 보내냐에 따라서 달라져야함
         const getUserDetailInfo = await this.placesService.getDetailInfo(
           userId,
           placeID,
-          boolValue
+          likeToggle
         );
 
         if (!getUserDetailInfo) {

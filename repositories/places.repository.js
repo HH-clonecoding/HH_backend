@@ -148,7 +148,7 @@ class PlacesRepository {
     return reNameInfo;
   };
 
-  getDetailInfo = async (userId, placeID, boolValue) => {
+  getDetailInfo = async (userId, placeID, likeToggle) => {
     // 게시글 가져오기
 
     const getDetailInfo = await Places.findAll({
@@ -178,7 +178,7 @@ class PlacesRepository {
           like: await this.likeService.findCheckAndAdd(
             userId,
             placeID,
-            boolValue
+            likeToggle
           ),
           system: ele.system.replace(/\s/g, ""),
           location: {

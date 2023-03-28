@@ -7,8 +7,8 @@ class LikeService {
     this.likeRepository = new LikeRepository();
   }
 
-  findCheckAndAdd = async (userId, placeID, boolValue) => {
-    if (boolValue == null) {
+  findCheckAndAdd = async (userId, placeID, likeToggle) => {
+    if (!likeToggle || likeToggle !== "true") {
       const isLike = await this.likeRepository.findPlaceUserCheck(
         userId,
         placeID
