@@ -22,7 +22,7 @@ module.exports = (app) => {
           const emailCheck = await Users.findOne({
             where: { email: profile._json.kakao_account.email },
           })
-          const exUser = await User.findOne({
+          const exUser = await Users.findOne({
             // 카카오 플랫폼에서 로그인 했고 & snsId필드에 카카오 아이디가 일치할경우
             where: { snsId: profile.id },
           })
