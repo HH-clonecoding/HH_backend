@@ -20,7 +20,6 @@ class RoomsService {
 
   findRoomsDetail = async (placeId) => {
     const findRoomsDetail = await this.roomsRepository.findRoomsDetail(placeId);
-
     const rename = await Promise.all(
       findRoomsDetail.map((ele, index) => {
         let selectRoomDetailArray = [];
@@ -39,7 +38,7 @@ class RoomsService {
                   .trim()
                   .join(","),
               ],
-          roomname: ele.roomName,
+          roomname: ele.roomName, // 직접 수정함
           option: selectRoomDetailArray,
           minPeople: Math.floor(Math.random() * ele.maxPeople) + 1,
           maxPeople: ele.maxPeople,

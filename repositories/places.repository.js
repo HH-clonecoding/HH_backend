@@ -27,8 +27,16 @@ class PlacesRepository {
           where: { PlaceId: ele.placeId },
         });
 
+        let initialValue = 0;
+        for (let i = 0; i < findPlacename.length; i++) {
+          initialValue += findPlacename[i].rate;
+        }
+
+        const starAvg = initialValue / findPlacename.length;
+        const roundedAvg = Math.round(starAvg * 10) / 10;
+
         return {
-          picture: !ele.pictures
+          picture: !ele.pictures //직접 수정함
             ? ""
             : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
             ? ele.pictures.replace(/\s/g, "").split(",")
@@ -41,7 +49,7 @@ class PlacesRepository {
                   .join(","),
               ],
           name: ele.name || "",
-          star: ele.star || "",
+          star: roundedAvg || "", // commentCount에 맞는 별점
           commentCount: findPlacename.length || 0,
         };
       })
