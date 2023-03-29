@@ -36,7 +36,7 @@ class PlacesRepository {
         const roundedAvg = Math.round(starAvg * 10) / 10;
 
         return {
-          picture: !ele.pictures
+          picture: !ele.pictures //직접 수정함
             ? ""
             : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
             ? ele.pictures.replace(/\s/g, "").split(",")
