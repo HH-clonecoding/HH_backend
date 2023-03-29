@@ -26,11 +26,21 @@ class PlacesRepository {
         const findPlacename = await Comments.findAll({
           where: { PlaceId: ele.placeId },
         });
-        console.log(findPlacename);
+
+
+        let initialValue = 0;
+        for (let i = 0; i < findPlacename.length; i++) {
+          initialValue += findPlacename[i].rate;
+        }
+
+        const starAvg = initialValue / findPlacename.length;
+        const roundedAvg = Math.round(starAvg * 10) / 10;
+
+
         return {
           picture: ele.pictures || "",
           name: ele.name || "",
-          star: ele.star || "",
+          star: roundedAvg || "", // commentCount에 맞는 별점
           commentCount: findPlacename.length || 0,
         };
       })
