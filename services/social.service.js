@@ -2,10 +2,12 @@ const axios = require('axios')
 const jwt = require('jsonwebtoken')
 const SocialRepository = require('../repositories/social.repository')
 const CustomError = require('../middlewares/errorHandler')
+const { text } = require('express')
 require('dotenv').config()
 
 const KAKAO_GRANT_TYPE = 'authorization_code'
 const KAKAO_CLIENT_ID = process.env.KAKAO_CLIENT_ID
+const KAKAO_CLIENT_SECRET = process.env.KAKAO_CLIENT_SECRET
 const KAKAO_REDIRECT_URL = process.env.KAKAO_REDIRECT_URL
 
 class SocialService {
@@ -17,13 +19,23 @@ class SocialService {
   // code = 인가 코드 받기 요청으로 얻은 인가 코드
   isKakao = async (code) => {
     const { data } = await axios.post(
-      `https://kauth.kakao.com/oauth/token?grant_type=${KAKAO_GRANT_TYPE}&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URL}&code=${code}`,
+      // `https://kauth.kakao.com/oauth/token?grant_type=${KAKAO_GRANT_TYPE}&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URL}&code=${code}`,
+      `https://kauth.kakao.com/oauth/token`,
+      {
+        grant_type: KAKAO_GRANT_TYPE,
+        client_id: KAKAO_CLIENT_ID,
+        client_secret: KAKAO_CLIENT_SECRET,
+        redirect_uri: KAKAO_REDIRECT_URL,
+        code,
+      },
       {
         headers: {
           'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
         },
       }
     )
+
+    console.log(data)
 
     let access_Token = data.accessToken
 
