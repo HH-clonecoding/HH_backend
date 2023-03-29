@@ -20,7 +20,6 @@ class RoomsService {
 
   findRoomsDetail = async (placeId) => {
     const findRoomsDetail = await this.roomsRepository.findRoomsDetail(placeId);
-
     const rename = await Promise.all(
       findRoomsDetail.map((ele, index) => {
         let selectRoomDetailArray = [];
