@@ -39,7 +39,7 @@ class RoomsService {
                   .trim()
                   .join(","),
               ],
-          roomname: ele.roomName,
+          roomname: ele.roomName, // 직접 수정함
           option: selectRoomDetailArray,
           minPeople: Math.floor(Math.random() * ele.maxPeople) + 1,
           maxPeople: ele.maxPeople,
