@@ -26,6 +26,7 @@ class RoomsService {
         selectRoomDetailArray.push(findRoomsDetail[index].option);
 
         return {
+          placeId: ele.PlaceId,
           pictures: !ele.pictures
             ? ""
             : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
