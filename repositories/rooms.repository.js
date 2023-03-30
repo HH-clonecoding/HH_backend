@@ -10,7 +10,14 @@ class RoomsRepository {
   findRoomsDetail = async (placeId) => {
     const findRoomsDetail = await Rooms.findAll({
       where: { PlaceId: placeId },
-      attributes: ["pictures", "roomName", "option", "maxPeople", "smoking"],
+      attributes: [
+        "PlaceId",
+        "pictures",
+        "roomName",
+        "option",
+        "maxPeople",
+        "smoking",
+      ],
     });
 
     return findRoomsDetail;

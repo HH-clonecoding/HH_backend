@@ -138,10 +138,19 @@ class PlacesController {
           );
         }
 
-        const { picture, name, star, commentCount, like, system, location } =
-          getUserDetailInfo;
+        const {
+          placeId,
+          picture,
+          name,
+          star,
+          commentCount,
+          like,
+          system,
+          location,
+        } = getUserDetailInfo;
 
         return res.status(200).json({
+          placeId: placeId,
           picture: picture,
           name: name,
           star: star,
@@ -166,10 +175,21 @@ class PlacesController {
           );
         }
 
-        const [{ picture, name, star, commentCount, like, system, location }] =
-          getDetailInfo;
+        const [
+          {
+            placeId,
+            picture,
+            name,
+            star,
+            commentCount,
+            like,
+            system,
+            location,
+          },
+        ] = getDetailInfo;
 
         return res.status(200).json({
+          placeId: placeId,
           picture: picture,
           name: name,
           star: star,

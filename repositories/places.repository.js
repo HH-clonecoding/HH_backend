@@ -22,7 +22,7 @@ class PlacesRepository {
     });
 
     const replacesSplit = await Promise.all(
-      placesSplit.map(async (ele) => {
+      placesSplit.map(async (ele, index) => {
         const findPlacename = await Comments.findAll({
           where: { PlaceId: ele.placeId },
         });
@@ -36,6 +36,7 @@ class PlacesRepository {
         const roundedAvg = Math.round(starAvg * 10) / 10;
 
         return {
+          placeId: ele.placeId,
           picture: !ele.pictures //직접 수정함
             ? ""
             : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
@@ -140,6 +141,7 @@ class PlacesRepository {
         const roundedAvg = Math.round(starAvg * 10) / 10;
 
         return {
+          placeId: ele.placeId,
           picture: !ele.pictures
             ? ""
             : ele.pictures.replace(/\s/g, "").substring(0, 4) == "http"
@@ -190,6 +192,7 @@ class PlacesRepository {
           where: { PlaceId: ele.placeId },
         });
         return {
+          placeId: ele.placeId,
           picture: ele.picture,
           name: ele.name,
           star: ele.star,
